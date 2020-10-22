@@ -7,20 +7,21 @@ import (
 	"log"
 	"net/http"
 	"sort"
-	"time"
+	"strconv"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
 // MyFile is just a smaller version of FileInfo with only the Name, Size in bytes and ModTime
 type MyFile struct {
-	Name    string    `json:"name"`
-	Size    int64     `json:"size"`
-	ModTime time.Time `json:"modtime"`
-	IsDir   bool      `json:"isDir"`
+	Name    string `json:"name"`
+	Size    string `json:"size"`
+	ModTime string `json:"modtime"`
+	IsDir   bool   `json:"isDir"`
 }
 
-// Addresss is a wrapper for address string
+// Address is a wrapper for address string
 type Address struct {
 	Addr string `json:"addr"`
 }
@@ -35,35 +36,28 @@ func main() {
 	r.HandleFunc("/", getFiles).Methods("GET")
 	r.HandleFunc("/", getAddr).Methods("POST")
 
-	//files, size, err := FindFiles("C:")
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Printf("Total Files: %d", size)
-	//fmt.Println(files)
+	ch := handlers.CORS(handlers.AllowedOrigins([]string{"*"}))
 
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":8000", ch(r)))
 }
 
 func getFiles(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	run()
-	//fmt.Println(files)
 	json.NewEncoder(w).Encode(files)
 }
 
 func getAddr(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	//params := mux.Vars(r)
-	//addr = params["addr"]
-	var ad Address
-	_ = json.NewDecoder(r.Body).Decode(&ad)
-	addr = ad.Addr
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	r.ParseForm()
+	// var ad Address
+	// fmt.Println(r.Body)
+	// _ = json.NewDecoder(r.Body).Decode(&ad)
+	//fmt.Println(r.FormValue("addr"))
+	addr = r.FormValue("addr")
 	fmt.Println("New addr: ", addr)
-	w.Header().Set("Content-Type", "application/json")
-	run()
-	//fmt.Println(files)
-	json.NewEncoder(w).Encode(files)
+	//run()
+	//json.NewEncoder(w).Encode(files)
 }
 
 func run() error {
@@ -92,7 +86,11 @@ func FindFiles(addr string) ([]MyFile, int, error) {
 	size := len(files)
 
 	for _, f := range files {
-		myf := MyFile{Name: f.Name(), Size: f.Size(), ModTime: f.ModTime(), IsDir: f.IsDir()}
+		s := ""
+		if f.Size() != 0 {
+			s = strconv.FormatInt(f.Size(), 10)
+		}
+		myf := MyFile{Name: f.Name(), Size: s, ModTime: f.ModTime().Format("15:04 2006-01-02"), IsDir: f.IsDir()}
 		myfiles = append(myfiles, myf)
 
 	}
