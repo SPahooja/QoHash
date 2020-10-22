@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -45,7 +44,6 @@ func getAddr(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	addr = r.FormValue("addr")
-	fmt.Println("New addr: ", addr)
 }
 
 func run() error {
