@@ -35,6 +35,9 @@ This providea a Web App and a CLI
 
 #### Web App
 
+- ```go mod download``
+
+- ``npm install```
 
 - ```make ```
 
@@ -43,6 +46,7 @@ This providea a Web App and a CLI
 - Enter the folder address in the search bar and click enter or Search button
 
 - The page should display count and all files and folders at the given address, size of files and last Modification time, sorted by size.
-![screen capture](http://url/to/img.png)
+
+![screen capture](https://github.com/SPahooja/QoHash/blob/main/images/FilesSC.png)
 
   
