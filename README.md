@@ -35,9 +35,9 @@ This providea a Web App and a CLI
 
 #### Web App
 
-- ```go mod download``
+- ```go mod download```
 
-- ``npm install```
+- ```npm install```
 
 - ```make ```
 
