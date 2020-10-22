@@ -19,6 +19,11 @@ var listCmd = &cobra.Command{
 			fmt.Println("Enter the file location to search in")
 			os.Exit(1)
 		}
+		if len(args) > 1 {
+			fmt.Println("Only enter the file location to search in")
+			os.Exit(1)
+		}
+
 		addr := args[0]
 
 		files, size, err := files.FindFiles(addr)

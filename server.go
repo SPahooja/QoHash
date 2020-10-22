@@ -32,12 +32,18 @@ func getFiles(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	json.NewEncoder(w).Encode(fileslist)
+	err = json.NewEncoder(w).Encode(fileslist)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func getAddr(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
-	r.ParseForm()
+	err := r.ParseForm()
+	if err != nil {
+		log.Fatal(err)
+	}
 	addr = r.FormValue("addr")
 	fmt.Println("New addr: ", addr)
 }

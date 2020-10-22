@@ -14,50 +14,7 @@ type MyFile struct {
 	IsDir   bool   `json:"isDir"`
 }
 
-// Address is a wrapper for address string
-type Address struct {
-	Addr string `json:"addr"`
-}
-
-// var files []MyFile
-// var size int
-// var addr string = "../"
-
-// func main() {
-// 	r := mux.NewRouter()
-
-// 	r.HandleFunc("/", getFiles).Methods("GET")
-// 	r.HandleFunc("/", getAddr).Methods("POST")
-
-// 	ch := handlers.CORS(handlers.AllowedOrigins([]string{"*"}))
-
-// 	log.Fatal(http.ListenAndServe(":8000", ch(r)))
-// }
-
-// func getFiles(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-// 	run()
-// 	json.NewEncoder(w).Encode(files)
-// }
-
-// func getAddr(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
-// 	r.ParseForm()
-// 	addr = r.FormValue("addr")
-// 	fmt.Println("New addr: ", addr)
-// }
-
-// func run() error {
-
-// 	//err = new error("something")
-// 	files, size, _ = FindFiles(addr)
-// 	// if err != nil {
-// 	// 	return err
-// 	// }
-// 	return nil
-// }
-
-//FindFiles takes in an address and return the files in the folder as an array of MyFile
+//FindFiles takes in an address and return the files in the folder as an array of MyFile, size of the array and error
 func FindFiles(addr string) ([]MyFile, int, error) {
 	files, err := ioutil.ReadDir(addr)
 	if err != nil {
@@ -82,5 +39,5 @@ func FindFiles(addr string) ([]MyFile, int, error) {
 
 	}
 
-	return myfiles, size, err
+	return myfiles, size, nil
 }

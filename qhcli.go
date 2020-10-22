@@ -1,19 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"log"
 
 	"github.com/SPahooja/QoHash/cmd"
 )
 
 func main() {
-	must(cmd.RootCmd.Execute())
-}
-
-func must(err error) {
+	err := cmd.RootCmd.Execute()
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		log.Fatal("Something went wrong\n", err)
 	}
 }
