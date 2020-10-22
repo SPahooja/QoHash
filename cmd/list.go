@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/SPahooja/QoHash/files"
+	"github.com/landoop/tableprinter"
 	"github.com/spf13/cobra"
 )
 
@@ -19,13 +20,22 @@ var listCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		addr := args[0]
+
 		files, size, err := files.FindFiles(addr)
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("Total Files:", size, "in", addr)
-		fmt.Println(files)
 
+		printer := tableprinter.New(os.Stdout)
+
+		fmt.Println("Total Files:", size, "in", addr)
+
+		printer.BorderTop, printer.BorderBottom, printer.BorderLeft, printer.BorderRight = true, true, true, true
+		printer.CenterSeparator = "│"
+		printer.ColumnSeparator = "│"
+		printer.RowSeparator = "─"
+
+		printer.Print(files)
 	},
 }
 

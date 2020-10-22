@@ -8,9 +8,9 @@ import (
 
 // MyFile is just a smaller version of FileInfo with only the Name, Size in bytes and ModTime
 type MyFile struct {
-	Name    string `json:"name"`
-	Size    string `json:"size"`
-	ModTime string `json:"modtime"`
+	Name    string `json:"name" header:"Name"`
+	Size    string `json:"size" header:"Size(bytes)"`
+	ModTime string `json:"modtime" header:"Modtime"`
 	IsDir   bool   `json:"isDir"`
 }
 

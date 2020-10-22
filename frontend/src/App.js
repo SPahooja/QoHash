@@ -84,6 +84,7 @@ class App extends React.Component{
       </Navbar>
       <Card className="bg-dark text-white">
         <Card.Header as="h1">Files</Card.Header>
+  <Card.Header as="h3">Found: {this.state.products.length}</Card.Header>
       </Card>
       <Table striped bordered hover variant="dark" variant="dark">
         <thead><tr><th>Name</th><th>Size (bytes)</th><th>ModTime</th>{" "}</tr></thead>
