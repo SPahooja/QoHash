@@ -1,16 +1,9 @@
-package main
+package files
 
 import (
-	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"log"
-	"net/http"
 	"sort"
 	"strconv"
-
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 )
 
 // MyFile is just a smaller version of FileInfo with only the Name, Size in bytes and ModTime
@@ -26,49 +19,43 @@ type Address struct {
 	Addr string `json:"addr"`
 }
 
-var files []MyFile
-var size int
-var addr string = "../"
+// var files []MyFile
+// var size int
+// var addr string = "../"
 
-func main() {
-	r := mux.NewRouter()
+// func main() {
+// 	r := mux.NewRouter()
 
-	r.HandleFunc("/", getFiles).Methods("GET")
-	r.HandleFunc("/", getAddr).Methods("POST")
+// 	r.HandleFunc("/", getFiles).Methods("GET")
+// 	r.HandleFunc("/", getAddr).Methods("POST")
 
-	ch := handlers.CORS(handlers.AllowedOrigins([]string{"*"}))
+// 	ch := handlers.CORS(handlers.AllowedOrigins([]string{"*"}))
 
-	log.Fatal(http.ListenAndServe(":8000", ch(r)))
-}
+// 	log.Fatal(http.ListenAndServe(":8000", ch(r)))
+// }
 
-func getFiles(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	run()
-	json.NewEncoder(w).Encode(files)
-}
+// func getFiles(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "application/json")
+// 	run()
+// 	json.NewEncoder(w).Encode(files)
+// }
 
-func getAddr(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
-	r.ParseForm()
-	// var ad Address
-	// fmt.Println(r.Body)
-	// _ = json.NewDecoder(r.Body).Decode(&ad)
-	//fmt.Println(r.FormValue("addr"))
-	addr = r.FormValue("addr")
-	fmt.Println("New addr: ", addr)
-	//run()
-	//json.NewEncoder(w).Encode(files)
-}
+// func getAddr(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+// 	r.ParseForm()
+// 	addr = r.FormValue("addr")
+// 	fmt.Println("New addr: ", addr)
+// }
 
-func run() error {
+// func run() error {
 
-	//err = new error("something")
-	files, size, _ = FindFiles(addr)
-	// if err != nil {
-	// 	return err
-	// }
-	return nil
-}
+// 	//err = new error("something")
+// 	files, size, _ = FindFiles(addr)
+// 	// if err != nil {
+// 	// 	return err
+// 	// }
+// 	return nil
+// }
 
 //FindFiles takes in an address and return the files in the folder as an array of MyFile
 func FindFiles(addr string) ([]MyFile, int, error) {

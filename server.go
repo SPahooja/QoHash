@@ -1,0 +1,54 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/SPahooja/QoHash/files"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+)
+
+var fileslist []files.MyFile
+var size int
+var addr string = "../"
+
+func main() {
+	r := mux.NewRouter()
+
+	r.HandleFunc("/", getFiles).Methods("GET")
+	r.HandleFunc("/", getAddr).Methods("POST")
+
+	ch := handlers.CORS(handlers.AllowedOrigins([]string{"*"}))
+
+	log.Fatal(http.ListenAndServe(":8000", ch(r)))
+}
+
+func getFiles(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	json.NewEncoder(w).Encode(fileslist)
+}
+
+func getAddr(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	r.ParseForm()
+	addr = r.FormValue("addr")
+	fmt.Println("New addr: ", addr)
+}
+
+func run() error {
+
+	f, s, err := files.FindFiles(addr)
+	if err != nil {
+		return err
+	}
+	fileslist = f
+	size = s
+	return nil
+}
